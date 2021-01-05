@@ -1,15 +1,25 @@
-Package: partyHelpers
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Package: tidytrees
+Title: Convert Regression/Classification Trees Into Tydy Tibbles
+Version: 0.1
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Angelo",
+           family = "D'Ambrosio",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to
-    pick a license
+           email = "a.dambrosioMD@example.com",
+        	 comment = c(ORCID = "0000-0002-2045-5155"))
+Description: Trees (e.g. from packages like "partykit" or "rpart") are a very powerful set of statistical learning algorithms.
+		Nevertheless each tree package has its own way of representing and storing the trees, usually as a nested recursive list with attributes. This makes it very hard to get a glance at the tree's characteristics, expecially its rules.
+		This package provides an interface to convert tree objects from various packages into a data frame like structure, with the set of rules defining each node and its characteristics.
+License: MIT + file LICENSE
+URL: https://github.com/bakaburg1/tidytrees
+BugReports: https://github.com/bakaburg1/tidytrees/issues
+Imports:
+		dplyr (>= 1.0.2),
+		stringr (>= 1.4.0),
+		magrittr (>= 2.0.1)
+Suggests:
+		partykit (>= 1.2-11)
+		rpart (>= 4.1-15)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
