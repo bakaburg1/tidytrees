@@ -18,8 +18,8 @@ Imports:
 		stringr (>= 1.4.0),
 		magrittr (>= 2.0.1)
 Suggests:
-		partykit (>= 1.2-11)
-		rpart (>= 4.1-15)
+		partykit
+		rpart
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
