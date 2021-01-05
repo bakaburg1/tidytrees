@@ -39,3 +39,6 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 .Rproj.user
+
+# OS specific
+*.DS_Store
