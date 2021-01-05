@@ -1,5 +1,5 @@
 Package: tidytrees
-Title: Convert Regression/Classification Trees Into Tydy Tibbles
+Title: Convert Regression/Classification Trees Into Tidy Tibbles
 Version: 0.1
 Authors@R: 
     person(given = "Angelo",
