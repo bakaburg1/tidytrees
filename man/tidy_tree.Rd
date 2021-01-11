@@ -56,6 +56,11 @@ Defaults to \code{FALSE}.}
 if \code{add_interval = TRUE}. Must be strictly greater than 0 and less than 1.
 Defaults to 0.95.}
 
+\item{est_fun}{Function to estimate node predictions and intervals. Must
+expose three mandatory arguments: \code{values} which receive the observations
+in a node, and \code{add_interval} and \code{interval_level} which get inherited from
+\code{tidy_tree()}. Check \code{\link{get_pred_estimates}} as a prototype.}
+
 \item{...}{Method specific arguments. Not used at the moment.}
 }
 \value{
@@ -77,8 +82,8 @@ details are described.
 \section{Methods (by class)}{
 \itemize{
 \item \code{party}: Turns a classification/regression tree produced by
-\code{\link[partykit:ctree]{partykit::ctree()}} into a tidy tibble. Also trees of class \code{XMLNode} and
-\code{Weka_tree} can be processed after conversion with \code{partykit::as.party()}.
+\code{\link[partykit:ctree]{partykit::ctree()}} into a tidy tibble. Also trees of class \code{\link[XML:XMLNode]{XML::XMLNode}} and
+\code{\link[RWeka:Weka_tree]{RWeka::Weka_tree}} can be processed after conversion with \code{partykit::as.party()}.
 
 \item \code{rpart}: Turn a classification/regression tree produced by
 \code{\link[rpart:rpart]{rpart::rpart()}} into a tidy tibble. At the moment, only the \code{anova} and
