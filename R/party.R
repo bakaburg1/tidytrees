@@ -15,7 +15,7 @@ tidy_tree.party <- function(tree, rule_as_text = TRUE, eval_ready = FALSE,
 											depth = numeric(), terminal = logical()))
 	}
 
-	if (add_estimates == FALSE & add_interval = TRUE) {
+	if (add_estimates == FALSE & add_interval == TRUE) {
 		warning('"add_interval" is TRUE but add estimates is FALSE; no interval will be computed.')
 	}
 
