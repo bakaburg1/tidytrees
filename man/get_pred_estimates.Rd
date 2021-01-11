@@ -11,8 +11,8 @@ get_pred_estimates(values, add_interval = FALSE, interval_level = 0.95)
 
 \item{add_interval}{Whether to compute confidence intervals.}
 
-\item{interval_level}{Confidence level. Must be strictly greater than 0 and less
-than 1. Defaults to 0.95, which corresponds to a 95 percent confidence
+\item{interval_level}{Confidence level. Must be strictly greater than 0 and
+less than 1. Defaults to 0.95, which corresponds to a 95 percent confidence
 interval.}
 }
 \value{
@@ -27,18 +27,18 @@ probability and the binomial confidence interval around the probability.}}
 \description{
 This function provides maximum likelihood point estimates of the outcome for
 each node in the tree (albeit it can be used with any vector of values). It
-also computes the confidence intervals around those estimates, using the
-normal approximation \eqn{mean ± Z_{\alpha}\times SE} for continuous outcomes
-and \code{stats::binom.test()} exact intervals for discrete (i.e. character,
-factor, logical) ones. The function argument and output are conform to
-\code{broom} package paradigm.
+optionally also computes the confidence intervals around those estimates,
+using a normal approximation \ifelse{html}{\out{<i>mean ± Z<sub>&alpha;</sub>
+SE</i>}}{\eqn{mean ± Z_{\alpha} SE}} for continuous values and
+\code{stats::binom.test()} exact binomial intervals for discrete (i.e.: character,
+factor, logical) ones.
 }
 \details{
-The function is thought to be passed as the \code{est_fun} argument of
-\code{tidy_tree()}, but works also as stand-alone. This is a default estimation
-method Estimates can be extremely noisy in decision trees, especially in
-small terminal nodes; therefore more robust solutions (e.g. Bayesian
-regularized intervals) are a better choice.
+The function is passed as the \code{est_fun} argument of \code{tidy_tree()},
+but works also as stand-alone. This is a default estimation method
+Estimates can be extremely noisy in decision trees, especially in small
+terminal nodes; therefore more robust solutions (e.g. Bayesian regularized
+intervals) are a better choice.
 }
 \examples{
 
@@ -47,11 +47,12 @@ get_pred_estimates(iris$Species)
 get_pred_estimates(iris$Sepal.Width)
 
 
+## Usage with `tidy_tree()`
+
 mod <- rpart::rpart(iris$Species ~ iris$Sepal.Length, iris)
 
-## Usage with `tidy_tree()`
-## (actually esl_fun = get_pred_estimates is the default)
 tidy_tree(mod, add_estimates = T, esl_fun = get_pred_estimates, add_interval = T)
+## (actually esl_fun = get_pred_estimates is redundant since it's the default)
 
 
 
