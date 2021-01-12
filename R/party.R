@@ -1,6 +1,7 @@
 #' @describeIn tidy_tree Turns a classification/regression tree produced by
-#'   [partykit::ctree()] into a tidy tibble. Also trees of class [`XML::XMLNode`] and
-#'   [`RWeka::Weka_tree`] can be processed after conversion with `partykit::as.party()`.
+#'   [partykit::ctree()] into a tidy tibble. Also trees of class
+#'   [`XML::XMLNode`] and [`RWeka::Weka_tree`] can be processed after conversion
+#'   with `partykit::as.party()` (but results have not been tested yet).
 #'
 #' @export
 
