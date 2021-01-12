@@ -61,7 +61,7 @@ get_pred_estimates <- function(values, add_interval = FALSE, interval_level = 0.
 
 		if (add_interval) {
 			se <- sd(values)/sqrt(length(values))
-			Z <- stats::qnorm(conf_level)
+			Z <- stats::qnorm(interval_level)
 
 			out %>% dplyr::mutate(
 				conf.low = estimate - Z * se,
