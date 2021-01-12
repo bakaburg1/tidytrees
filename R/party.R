@@ -21,7 +21,7 @@ tidy_tree.party <- function(tree, rule_as_text = TRUE, eval_ready = FALSE,
 	}
 
 	## strangely nodeapply is faster than lapply!!
-	nodeapply(tree, nodeids(tree), function(x) {
+	ret <- nodeapply(tree, nodeids(tree), function(x) {
 
 		split <- split_node(x)
 
@@ -90,11 +90,16 @@ tidy_tree.party <- function(tree, rule_as_text = TRUE, eval_ready = FALSE,
 			depth = if (eval_ready | rule_as_text) {
 				stringr::str_count(rule, stringr::fixed('&')) + 1
 			} else sapply(rule, length),
+		)
 
-			lapply(id, function(i) {
-				est_fun(tree[i]$fitted$`(response)`, add_interval = add_interval,
-								interval_level = interval_level)
-			}) %>% dplyr::bind_rows()
-		) %>%
-		dplyr::arrange(id) %>% dplyr::select(-parent)
+	if (add_estimates) {
+		estimates <- lapply(ret$id, function(i) {
+			est_fun(tree[i]$fitted$`(response)`, add_interval = add_interval,
+							interval_level = interval_level)
+		}) %>% dplyr::bind_rows()
+
+		ret <- data.frame(ret, estimates)
+	}
+
+	dplyr::arrange(ret, id) %>% dplyr::select(-parent)
 }
