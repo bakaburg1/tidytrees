@@ -86,6 +86,8 @@ get_pred_estimates <- function(values, add_interval = FALSE, interval_level = 0.
 			}
 		}) %>% dplyr::bind_rows()
 
+		names(out$estimate) <- NULL
+
 		if (length(lvls) > 1) dplyr::mutate(out, y.level = lvls) else out
 
 	} else stop('Values should be either numeric, factors, characters or logical.')
