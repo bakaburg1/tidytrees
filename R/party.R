@@ -53,8 +53,14 @@ tidy_tree.party <- function(tree, rule_as_text = TRUE, eval_ready = FALSE,
 						if (is.null(kids[[2]]$info$nobs)) NA else kids[[2]]$info$nobs
 					)
 
-					kids_obs[is.na(kids_obs)] <- x$info$nobs - kids_obs[!is.na(kids_obs)]
-					kids_obs
+					if (all(is.na(kids_obs))) { # sometimes both kids node don't have info on n.obs... I don't know how partykit print info for them
+						kids_obs <- c( # less efficient
+							nrow(data_party(tree, id_node(kids[[1]]))),
+							nrow(data_party(tree, id_node(kids[[2]])))
+						)
+					} else { # sometimes instead n.obs is only in one of the kids
+						kids_obs[is.na(kids_obs)] <- x$info$nobs - kids_obs[!is.na(kids_obs)]
+					}
 				},
 				#terminal = sapply(kids, is.terminal) # slightly slower
 				terminal = c(
