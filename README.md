@@ -19,7 +19,7 @@ defining set of rules and its characteristics.
 
 ## Installation
 
-You can install the released version of `tidytrees` with
+You can install the last version of `tidytrees` with
 <!-- [CRAN](https://CRAN.R-project.org) with: -->
 
 <!-- ``` r -->

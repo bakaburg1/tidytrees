@@ -27,7 +27,7 @@ This package provides an interface to convert tree objects from various packages
 
 ## Installation
 
-You can install the released version of `tidytrees` with
+You can install the last version of `tidytrees` with
 <!-- [CRAN](https://CRAN.R-project.org) with: -->
 
 <!-- ``` r -->
