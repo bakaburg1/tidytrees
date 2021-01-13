@@ -28,7 +28,7 @@ tidy_tree.rpart <- function(tree, rule_as_text = TRUE, eval_ready = FALSE,
 		tibble::rownames_to_column('id') %>%
 		dplyr::mutate(id = as.numeric(id)) %>%
 		dplyr::transmute(
-			rule = path.rpart(tree, id, print.it = F) %>%
+			rule = path.rpart(tree, id, print.it = FALSE) %>%
 				lapply(function(node.rules) { # add spaces around equal/greater/less signs
 
 					stringr::str_replace_all(node.rules[-1], c(
