@@ -91,11 +91,11 @@ tidy_tree.party <- function(tree, rule_as_text = TRUE, eval_ready = FALSE,
 					rule.vec <- c(rule[id == cur_id], rule.vec)
 				}
 
-				if (eval_ready | rule_as_text) paste(rule.vec, collapse = ' & ') else rule.vec
+				if (rule_as_text) paste(rule.vec, collapse = ' & ') else rule.vec
 
 			}),
 
-			depth = if (eval_ready | rule_as_text) {
+			depth = if (rule_as_text) {
 				stringr::str_count(rule, stringr::fixed('&')) + 1
 			} else sapply(rule, length),
 		)

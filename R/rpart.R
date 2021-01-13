@@ -36,7 +36,7 @@ tidy_tree.rpart <- function(tree, rule_as_text = TRUE, eval_ready = FALSE,
 						'(=|[<>]=?)' = ' \\1 ' # add spaces around comparators
 					))
 
-				}),
+				}) %>% setNames(NULL),
 			id,
 			n.obs = n,
 			depth = rpart:::tree.depth(id) + 1,
@@ -68,7 +68,7 @@ tidy_tree.rpart <- function(tree, rule_as_text = TRUE, eval_ready = FALSE,
 	}
 
 	if (eval_ready) {
-		ret$rule <- sapply(ret$rule, function(rules) {
+		ret$rule <- lapply(ret$rule, function(rules) {
 
 			stringr::str_replace_all(rules, c(
 				' = ' = ' %in% ',
@@ -76,9 +76,11 @@ tidy_tree.rpart <- function(tree, rule_as_text = TRUE, eval_ready = FALSE,
 				'% (.*)' = '% "\\1"',
 				',(.*)' = ',\\1)',
 				'% (.+),' = '% c(\\1,'
-			)) %>% paste(collapse = ' & ')
+			))
 		})
-	} else if (rule_as_text) {
+	}
+
+	if (rule_as_text) {
 		ret$rule <- sapply(ret$rule, paste, collapse = ' & ')
 	}
 
