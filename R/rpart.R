@@ -84,5 +84,5 @@ tidy_tree.rpart <- function(tree, rule_as_text = TRUE, eval_ready = FALSE,
 
 	rownames(ret) <- NULL
 
-	ret
+	dplyr::tibble(ret)
 }

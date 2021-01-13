@@ -141,7 +141,8 @@ mod.discr.exp <- structure(
 								"setosa", "versicolor", "virginica", "setosa", "versicolor",
 								"virginica", "setosa", "versicolor", "virginica", "setosa",
 								"versicolor", "virginica", "setosa", "versicolor", "virginica",
-								"setosa", "versicolor", "virginica")), row.names = c(NA, -24L), class = "data.frame")
+								"setosa", "versicolor", "virginica")),
+	row.names = c(NA, -24L), class = c("tbl_df", "tbl", "data.frame"))
 
 
 perform_output_tests(model = mod.discr, exp = mod.discr.exp,
@@ -181,7 +182,7 @@ mod.cont.exp <- structure(list(
 	estimate = c(2.872, 2.74137931034483, 2.46666666666667, 2.81304347826087, 3.05238095238095, 3.428, 3.20357142857143, 3.71363636363636),
 	conf.low = c(2.81726733000954, 2.67259875797012, 2.35153878102252, 2.74080862244187, 2.98576141584285, 3.33982302037751, 3.11792574978101, 3.61136926311226),
 	conf.high = c(2.92673266999046, 2.81015986271953, 2.58179455231081, 2.88527833407986, 3.11900048891906, 3.51617697962249, 3.28921710736185, 3.81590346416047)
-), row.names = c(NA, -8L), class = "data.frame")
+), row.names = c(NA, -8L), class = c("tbl_df", "tbl", "data.frame"))
 
 perform_output_tests(model = mod.cont, exp = mod.cont.exp,
 										 is_discrete_out = F, tree_length_fun = get_tree_length)

@@ -110,5 +110,6 @@ tidy_tree.party <- function(tree, rule_as_text = TRUE, eval_ready = FALSE,
 		}) %>% dplyr::bind_rows()
 	}
 
-	dplyr::arrange(ret, id) %>% dplyr::select(-parent)
+	dplyr::arrange(ret, id) %>% dplyr::select(-parent) %>%
+		dplyr::tibble()
 }

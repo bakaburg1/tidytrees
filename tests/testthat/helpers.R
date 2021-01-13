@@ -5,7 +5,7 @@ any_of <- dplyr::any_of
 find_method <- function(generic, ...) {
 	ch <- deparse(substitute(generic))
 	f <- X <- function(x, ...) UseMethod("X")
-	for(m in methods(ch)) assign(sub(ch, "X", m, fixed = TRUE), "body<-"(f, value = m))
+	for (m in methods(ch)) assign(sub(ch, "X", m, fixed = TRUE), "body<-"(f, value = m))
 	X(...)
 } # https://stackoverflow.com/a/42742370/380403
 
@@ -138,13 +138,9 @@ perform_predictions_test <- function(model, model_data = NULL) {
 			}
 
 			ret %>% dplyr::mutate(n.obs = length(node.obs))
-		}) %>% dplyr::bind_rows() %>% as.data.frame()
+		}) %>% dplyr::bind_rows() %>% dplyr::tibble()
 
 		obs <- select(obs, any_of(c('n.obs', 'estimate', 'y.level')), matches('conf'))
-
-		for (col in colnames(obs)) {
-			expect_equal(obs[,col], exp[,col], label = col, expected.label = col)
-		}
 
 		cols <- sort(colnames(exp))
 		expect_equal(obs[, cols], exp[, cols])

@@ -72,7 +72,7 @@ mod.discr.exp <- structure(list(rule = c("Sepal.Length <= 5.4", "Sepal.Length <=
 																						"virginica", "setosa", "versicolor", "virginica", "setosa", "versicolor",
 																						"virginica", "setosa", "versicolor", "virginica", "setosa", "versicolor",
 																						"virginica")),
-													 row.names = c(NA, -24L),  class = "data.frame")
+													 row.names = c(NA, -24L),  class = c("tbl_df", "tbl", "data.frame"))
 
 perform_output_tests(model = mod.discr, exp = mod.discr.exp,
 										 is_discrete_out = T, tree_length_fun = get_tree_length)
@@ -107,7 +107,7 @@ mod.cont.exp <- structure(list(rule = c("Species in setosa", "Species in setosa 
 															 conf.low = c(3.33982302037751, 3.11792574978101, 3.03638177958466, 3.25069186006287, 3.61136926311226, 3.51573319205604, 3.64696431709426, 2.81726733000954, 2.67259875797012, 2.35153878102252, 2.74080862244187, 2.98576141584285),
 															 conf.high = c(3.51617697962249, 3.28921710736185, 3.24361822041534, 3.47430813993713, 3.81590346416047, 3.73426680794396, 3.99303568290574, 2.92673266999046, 2.81015986271953, 2.58179455231081, 2.88527833407986, 3.11900048891906)),
 													row.names = c(NA, -12L),
-													class = "data.frame")
+													class = c("tbl_df", "tbl", "data.frame"))
 
 perform_output_tests(model = mod.cont, exp = mod.cont.exp,
 										 is_discrete_out = F, tree_length_fun = get_tree_length)
