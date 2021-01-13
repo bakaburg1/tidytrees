@@ -62,7 +62,7 @@ tidy_tree.rpart <- function(tree, rule_as_text = TRUE, eval_ready = FALSE,
 			estimates <- est_fun(obs, add_interval = add_interval,
 													 interval_level = interval_level)
 
-			data.frame(cur_node[rep(1, nrow(estimates)),], estimates)
+			data.frame(cur_node, estimates, row.names = TRUE)
 		}) %>% dplyr::bind_rows()
 
 	}
