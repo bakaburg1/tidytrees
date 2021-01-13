@@ -107,7 +107,7 @@ iris %>% filter(eval(str2expression(out$rule[3]))) %>% str
 out <- tidy_tree(model, rule_as_text = F)
 
 out$rule[3]
-#> $`8`
+#> [[1]]
 #> [1] "Species = versicolor,virginica" "Sepal.Length < 6.35"           
 #> [3] "Sepal.Length < 5.55"
 
@@ -115,7 +115,10 @@ out$rule[3]
 out <- tidy_tree(model, rule_as_text = F, eval_ready = T)
 
 out$rule[3]
-#> [1] "Species %in% c(\"versicolor\", \"virginica\") & Sepal.Length < 6.35 & Sepal.Length < 5.55"
+#> [[1]]
+#> [1] "Species %in% c(\"versicolor\", \"virginica\")"
+#> [2] "Sepal.Length < 6.35"                          
+#> [3] "Sepal.Length < 5.55"
 ```
 
 ## Node predictions
