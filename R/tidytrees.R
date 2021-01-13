@@ -47,7 +47,7 @@
 #'
 #' tidy_tree(mod, add_interval = TRUE)
 #'
-tidy_tree <- function (tree, rule_as_text = TRUE, eval_ready = FALSE,
+tidy_tree <- function(tree, rule_as_text = TRUE, eval_ready = FALSE,
 											 add_estimates = TRUE, add_interval = FALSE, interval_level = 0.95,
 											 est_fun = tidytrees::get_pred_estimates)
 {
