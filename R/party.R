@@ -101,12 +101,13 @@ tidy_tree.party <- function(tree, rule_as_text = TRUE, eval_ready = FALSE,
 		)
 
 	if (add_estimates) {
-		estimates <- lapply(ret$id, function(i) {
-			est_fun(tree[i]$fitted$`(response)`, add_interval = add_interval,
-							interval_level = interval_level)
+		ret <- lapply(ret$id, function(i) {
+			data.frame(
+				ret[ret$id == i,],
+				est_fun(tree[i]$fitted$`(response)`,add_interval = add_interval, interval_level = interval_level),
+				row.names = NULL
+				)
 		}) %>% dplyr::bind_rows()
-
-		ret <- data.frame(ret, estimates)
 	}
 
 	dplyr::arrange(ret, id) %>% dplyr::select(-parent)
