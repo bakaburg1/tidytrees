@@ -1,0 +1,144 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+	collapse = TRUE,
+	comment = "#>",
+	fig.path = "man/figures/README-",
+	out.width = "100%",
+	message = FALSE
+)
+```
+
+# tidytrees
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+Regression and classification trees (e.g. from packages like `partykit` or `rpart`) are a very powerful set of statistical learning algorithms.  
+
+Nevertheless each tree package has its own way of representing and storing the trees, usually as a nested recursive list with attributes. This makes it very hard to interact with them.  
+
+This package provides an interface to convert tree objects from various packages into a "tidy" data frame, with a row for each node showing its defining set of rules and its characteristics.  
+
+## Installation
+
+You can install the released version of `tidytrees` with
+<!-- [CRAN](https://CRAN.R-project.org) with: -->
+
+<!-- ``` r -->
+<!-- install.packages("tidytrees") -->
+<!-- ``` -->
+
+<!-- And the development version from [GitHub](https://github.com/) with: -->
+
+```
+# install.packages("devtools")
+devtools::install_github("bakaburg1/tidytrees")
+```
+## Simple use
+
+`tidytrees` exposes the generic function `tidy_tree` which has a method for various tree objects (see `?tidy_tree` for the list supported methods). The output is a tibble with a row of each tree node. For each node the relative rules are reported, plus other information like the node id, the number of observations related to the node in the data from which the model is derived, the depth of the node in the tree.  
+```{r simple trees}
+library(tidytrees)
+library(partykit)
+library(rpart)
+
+# The function works with partykit...
+model <- ctree(Sepal.Width ~ Species + Sepal.Length, data = iris)
+
+tidy_tree(model)
+
+# ... and with rpart trees (more models to come)
+model <- rpart(Sepal.Width ~ Species + Sepal.Length, data = iris)
+
+tidy_tree(model)
+
+```
+
+The rules can optionally be rendered in a R compatible format, for easy use as data filters, or as list of rules.
+
+```{r rule options}
+library(tidytrees)
+library(dplyr)
+library(rpart)
+
+model <- rpart(Sepal.Width ~ Species + Sepal.Length, data = iris)
+
+# Evaluation friendly rules
+
+out <- tidy_tree(model, eval_ready = T)
+
+iris %>% filter(eval(str2expression(out$rule[3]))) %>% str
+
+# Rules as vectors
+out <- tidy_tree(model, rule_as_text = F)
+
+out$rule[3]
+
+# Both
+out <- tidy_tree(model, rule_as_text = F, eval_ready = T)
+
+out$rule[3]
+
+```
+
+
+## Node predictions
+
+The output contains optionally the predicted value in the node and estimation intervals, with the possibility to chose the interval coverage (default = 95%).
+
+```{r node predictions}
+library(tidytrees)
+library(dplyr)
+library(rpart)
+
+# Intervals for continuous...
+model <- rpart(Sepal.Width ~ Species + Sepal.Length, data = iris)
+
+tidy_tree(model, add_interval = T, interval_level = .89)
+
+# ... and discrete outcomes
+model <- rpart(Species ~ Sepal.Width + Sepal.Length, data = iris)
+
+tidy_tree(model, add_interval = T, interval_level = .89)
+```
+
+The default intervals are based on the normal approximation for continuous values and on `binom.test()` for discrete ones. But the estimation function is pluggable, so users can provide their own.
+
+```{r custom node estimation function}
+library(tidytrees)
+library(dplyr)
+library(rpart)
+
+# Quantile intervals for continuous outcomes
+model <- rpart(Sepal.Width ~ Species + Sepal.Length, data = iris)
+
+tidy_tree(model, add_interval = T, est_fun = function(values, add_interval, interval_level) {
+	data.frame(
+		estimate = median(values),
+		conf.low = quantile(values, (1 - interval_level) / 2),
+		conf.high = quantile(values, .5 + interval_level/2)
+	)
+})
+
+# Bayesian regularized credibility intervals for discrete outcomes
+model <- rpart(Species ~ Sepal.Width + Sepal.Length, data = iris)
+
+tidy_tree(model, add_interval = T, est_fun = function(values, add_interval, interval_level) {
+	table(values) %>%
+		lapply(function(cases) {
+			qbeta(
+				c(.5, (1 - interval_level) / 2, .5 + interval_level/2),
+				cases + 1.1,
+				length(values) - cases + 1.1
+			) %>% matrix(nrow = 1) %>% as.data.frame() %>% 
+				setNames(c('estimate', 'cred.low', 'cred.high'))
+		}) %>% bind_rows()
+})
+
+```
