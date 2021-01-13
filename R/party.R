@@ -48,19 +48,21 @@ tidy_tree.party <- function(tree, rule_as_text = TRUE, eval_ready = FALSE,
 				# 	.
 				# },
 				n.obs = {
+
 					kids_obs <- c(
 						if (is.null(kids[[1]]$info$nobs)) NA else kids[[1]]$info$nobs,
 						if (is.null(kids[[2]]$info$nobs)) NA else kids[[2]]$info$nobs
 					)
 
-					if (all(is.na(kids_obs))) { # sometimes both kids node don't have info on n.obs... I don't know how partykit print info for them
-						kids_obs <- c( # less efficient
-							nrow(data_party(tree, id_node(kids[[1]]))),
-							nrow(data_party(tree, id_node(kids[[2]])))
-						)
+					if (all(is.na(kids_obs))) {
+						# Sometimes both kids node don't have info on n.obs, so the node observations need to be extracted (expensive).
+						# I can't understand how partykit::print solves this apparent randomness
+						kids_obs <- data_party(tree, id = sapply(kids, id_node)) %>% sapply(nrow)
 					} else { # sometimes instead n.obs is only in one of the kids
 						kids_obs[is.na(kids_obs)] <- x$info$nobs - kids_obs[!is.na(kids_obs)]
 					}
+
+					kids_obs
 				},
 				#terminal = sapply(kids, is.terminal) # slightly slower
 				terminal = c(
