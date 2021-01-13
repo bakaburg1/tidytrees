@@ -7,9 +7,9 @@ Authors@R:
            role = c("aut", "cre"),
            email = "a.dambrosioMD@example.com",
         	 comment = c(ORCID = "0000-0002-2045-5155"))
-Description: Trees (e.g. from packages like "partykit" or "rpart") are a very powerful set of statistical learning algorithms.
-		Nevertheless each tree package has its own way of representing and storing the trees, usually as a nested recursive list with attributes. This makes it very hard to get a glance at the tree's characteristics, expecially its rules.
-		This package provides an interface to convert tree objects from various packages into a data frame like structure, with the set of rules defining each node and its characteristics.
+Description: Regression and classification trees (e.g. from packages like `partykit` or `rpart`) are a very powerful set of statistical learning algorithms.  
+    Nevertheless each tree package has its own way of representing and storing the trees, usually as a nested recursive list with attributes. This makes it very hard to interact with them.  
+    This package provides an interface to convert tree objects from various packages into a "tidy" data frame, with a row for each node showing its defining set of rules and its characteristics.
 License: MIT + file LICENSE
 URL: https://github.com/bakaburg1/tidytrees
 BugReports: https://github.com/bakaburg1/tidytrees/issues
