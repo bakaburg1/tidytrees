@@ -82,8 +82,9 @@ details are described.
 \section{Methods (by class)}{
 \itemize{
 \item \code{party}: Turns a classification/regression tree produced by
-\code{\link[partykit:ctree]{partykit::ctree()}} into a tidy tibble. Also trees of class \code{\link[XML:XMLNode]{XML::XMLNode}} and
-\code{\link[RWeka:Weka_tree]{RWeka::Weka_tree}} can be processed after conversion with \code{partykit::as.party()}.
+\code{\link[partykit:ctree]{partykit::ctree()}} into a tidy tibble. Also trees of class
+\code{\link[XML:XMLNode]{XML::XMLNode}} and \code{\link[RWeka:Weka_tree]{RWeka::Weka_tree}} can be processed after conversion
+with \code{partykit::as.party()} (but results have not been tested yet).
 
 \item \code{rpart}: Turn a classification/regression tree produced by
 \code{\link[rpart:rpart]{rpart::rpart()}} into a tidy tibble. At the moment, only the \code{anova} and
