@@ -28,7 +28,7 @@ test_that('the rules are as in the original tree', {
 				'(=|[<>]=?)' = ' \\1 ' # add spaces around comparators
 			))
 
-		})
+		}) %>% setNames(NULL)
 
 	obs <- tidy_tree(mod, rule_as_text = F, add_estimates = F)$rule
 
@@ -74,24 +74,14 @@ mod.discr.exp <- structure(
 						 "Sepal.Length >= 5.45 & Sepal.Length >= 6.15",
 						 "Sepal.Length >= 5.45 & Sepal.Length >= 6.15",
 						 "Sepal.Length >= 5.45 & Sepal.Length >= 6.15"),
-		rule.list = list(`2` = "Sepal.Length < 5.45", `2` = "Sepal.Length < 5.45",
-										 `2` = "Sepal.Length < 5.45", `4` = c("Sepal.Length < 5.45", "Sepal.Width >= 2.8"),
-										 `4` = c("Sepal.Length < 5.45", "Sepal.Width >= 2.8"), `4` = c("Sepal.Length < 5.45", "Sepal.Width >= 2.8"),
-										 `5` = c("Sepal.Length < 5.45", "Sepal.Width < 2.8"),
-										 `5` = c("Sepal.Length < 5.45", "Sepal.Width < 2.8"),
-										 `5` = c("Sepal.Length < 5.45", "Sepal.Width < 2.8"),
-										 `3` = "Sepal.Length >= 5.45", `3` = "Sepal.Length >= 5.45",
-										 `3` = "Sepal.Length >= 5.45", `6` = c("Sepal.Length >= 5.45", "Sepal.Length < 6.15"),
-										 `6` = c("Sepal.Length >= 5.45", "Sepal.Length < 6.15"), `6` = c("Sepal.Length >= 5.45", "Sepal.Length < 6.15"),
-										 `12` = c("Sepal.Length >= 5.45", "Sepal.Length < 6.15", "Sepal.Width >= 3.1"),
-										 `12` = c("Sepal.Length >= 5.45", "Sepal.Length < 6.15", "Sepal.Width >= 3.1"),
-										 `12` = c("Sepal.Length >= 5.45", "Sepal.Length < 6.15", "Sepal.Width >= 3.1"),
-										 `13` = c("Sepal.Length >= 5.45", "Sepal.Length < 6.15", "Sepal.Width < 3.1"),
-										 `13` = c("Sepal.Length >= 5.45", "Sepal.Length < 6.15", "Sepal.Width < 3.1"),
-										 `13` = c("Sepal.Length >= 5.45", "Sepal.Length < 6.15", "Sepal.Width < 3.1"),
-										 `7` = c("Sepal.Length >= 5.45", "Sepal.Length >= 6.15"),
-										 `7` = c("Sepal.Length >= 5.45", "Sepal.Length >= 6.15"),
-										 `7` = c("Sepal.Length >= 5.45", "Sepal.Length >= 6.15")),
+		rule.list = list("Sepal.Length < 5.45", "Sepal.Length < 5.45", "Sepal.Length < 5.45",
+										 c("Sepal.Length < 5.45", "Sepal.Width >= 2.8"), c("Sepal.Length < 5.45", "Sepal.Width >= 2.8"), c("Sepal.Length < 5.45", "Sepal.Width >= 2.8"),
+										 c("Sepal.Length < 5.45", "Sepal.Width < 2.8"), c("Sepal.Length < 5.45", "Sepal.Width < 2.8"), c("Sepal.Length < 5.45", "Sepal.Width < 2.8"),
+										 "Sepal.Length >= 5.45", "Sepal.Length >= 5.45", "Sepal.Length >= 5.45",
+										 c("Sepal.Length >= 5.45", "Sepal.Length < 6.15"), c("Sepal.Length >= 5.45", "Sepal.Length < 6.15"), c("Sepal.Length >= 5.45", "Sepal.Length < 6.15"),
+										 c("Sepal.Length >= 5.45", "Sepal.Length < 6.15", "Sepal.Width >= 3.1"), c("Sepal.Length >= 5.45", "Sepal.Length < 6.15", "Sepal.Width >= 3.1"), c("Sepal.Length >= 5.45", "Sepal.Length < 6.15", "Sepal.Width >= 3.1"),
+										 c("Sepal.Length >= 5.45", "Sepal.Length < 6.15", "Sepal.Width < 3.1"), c("Sepal.Length >= 5.45", "Sepal.Length < 6.15", "Sepal.Width < 3.1"), c("Sepal.Length >= 5.45", "Sepal.Length < 6.15", "Sepal.Width < 3.1"),
+										 c("Sepal.Length >= 5.45", "Sepal.Length >= 6.15"), c("Sepal.Length >= 5.45", "Sepal.Length >= 6.15"), c("Sepal.Length >= 5.45", "Sepal.Length >= 6.15")),
 		rule.eval = c("Sepal.Length < 5.45", "Sepal.Length < 5.45",
 									"Sepal.Length < 5.45", "Sepal.Length < 5.45 & Sepal.Width >= 2.8",
 									"Sepal.Length < 5.45 & Sepal.Width >= 2.8", "Sepal.Length < 5.45 & Sepal.Width >= 2.8",
@@ -168,7 +158,14 @@ mod.cont.exp <- structure(list(
 		"Species = setosa",
 		"Species = setosa & Sepal.Length < 5.05",
 		"Species = setosa & Sepal.Length >= 5.05"),
-	rule.list = list(`2` = "Species = versicolor,virginica", `4` = c("Species = versicolor,virginica", "Sepal.Length < 6.35" ), `8` = c("Species = versicolor,virginica", "Sepal.Length < 6.35", "Sepal.Length < 5.55"), `9` = c("Species = versicolor,virginica", "Sepal.Length < 6.35", "Sepal.Length >= 5.55"), `5` = c("Species = versicolor,virginica", "Sepal.Length >= 6.35"), `3` = "Species = setosa", `6` = c("Species = setosa", "Sepal.Length < 5.05"), `7` = c("Species = setosa", "Sepal.Length >= 5.05" )),
+	rule.list = list("Species = versicolor,virginica",
+									 c("Species = versicolor,virginica", "Sepal.Length < 6.35"),
+									 c("Species = versicolor,virginica", "Sepal.Length < 6.35", "Sepal.Length < 5.55"),
+									 c("Species = versicolor,virginica", "Sepal.Length < 6.35", "Sepal.Length >= 5.55"),
+									 c("Species = versicolor,virginica", "Sepal.Length >= 6.35"),
+									 "Species = setosa",
+									 c("Species = setosa", "Sepal.Length < 5.05"),
+									 c("Species = setosa", "Sepal.Length >= 5.05")),
 	rule.eval = c("Species %in% c(\"versicolor\", \"virginica\")", "Species %in% c(\"versicolor\", \"virginica\") & Sepal.Length < 6.35",
 								"Species %in% c(\"versicolor\", \"virginica\") & Sepal.Length < 6.35 & Sepal.Length < 5.55",
 								"Species %in% c(\"versicolor\", \"virginica\") & Sepal.Length < 6.35 & Sepal.Length >= 5.55",
