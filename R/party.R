@@ -106,7 +106,7 @@ tidy_tree.party <- function(tree, rule_as_text = TRUE, eval_ready = FALSE,
 				ret[ret$id == i,],
 				est_fun(tree[i]$fitted$`(response)`,add_interval = add_interval, interval_level = interval_level),
 				row.names = NULL
-				)
+			)
 		}) %>% dplyr::bind_rows()
 	}
 
