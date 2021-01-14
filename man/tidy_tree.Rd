@@ -77,7 +77,8 @@ argument.
 Takes a classification/regression tree (usually a list) and returns a
 \code{\link[tibble:tibble]{tibble::tibble()}} with a row for each node including the set of additive
 rules necessary to identify it. Furthermore, node characteristics and fit
-details are described.
+details are described. Check \link{https://github.com/bakaburg1/tidytrees} for a
+more detailed explanation.
 }
 \section{Methods (by class)}{
 \itemize{

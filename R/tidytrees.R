@@ -3,7 +3,8 @@
 #' Takes a classification/regression tree (usually a list) and returns a
 #' [tibble::tibble()] with a row for each node including the set of additive
 #' rules necessary to identify it. Furthermore, node characteristics and fit
-#' details are described.
+#' details are described. Check [https://github.com/bakaburg1/tidytrees] for a
+#' more detailed explanation.
 #'
 #' @param tree A tree object.
 #' @param rule_as_text Whether to represent the rules as a string or a vector.
