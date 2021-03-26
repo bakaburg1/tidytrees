@@ -21,7 +21,7 @@ tidy_tree.party <- function(tree, rule_as_text = TRUE, eval_ready = FALSE,
 	}
 
 	## strangely nodeapply is faster than lapply!!
-	ret <- partykit::nodeapply(tree, nodeids(tree), function(x) {
+	ret <- partykit::nodeapply(tree, partykit::nodeids(tree), function(x) {
 
 		split <- partykit::split_node(x)
 
