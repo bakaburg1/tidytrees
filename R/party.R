@@ -37,7 +37,7 @@ tidy_tree.party <- function(tree, rule_as_text = TRUE, eval_ready = FALSE,
 			data.frame(
 				parent = partykit::id_node(x),
 				rule,
-				id = sapply(kids, id_node),
+				id = sapply(kids, partykit::id_node),
 
 				## computing n.obs and terminal here is faster than using sapply over the ids outside
 
@@ -57,7 +57,7 @@ tidy_tree.party <- function(tree, rule_as_text = TRUE, eval_ready = FALSE,
 					if (all(is.na(kids_obs))) {
 						# Sometimes both kids node don't have info on n.obs, so the node observations need to be extracted (expensive).
 						# I can't understand how partykit::print solves this apparent randomness
-						kids_obs <- partykit::data_party(tree, id = sapply(kids, id_node)) %>% sapply(nrow)
+						kids_obs <- partykit::data_party(tree, id = sapply(kids, partykit::id_node)) %>% sapply(nrow)
 					} else { # sometimes instead n.obs is only in one of the kids
 						kids_obs[is.na(kids_obs)] <- x$info$nobs - kids_obs[!is.na(kids_obs)]
 					}
