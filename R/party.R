@@ -21,21 +21,21 @@ tidy_tree.party <- function(tree, rule_as_text = TRUE, eval_ready = FALSE,
 	}
 
 	## strangely nodeapply is faster than lapply!!
-	ret <- nodeapply(tree, nodeids(tree), function(x) {
+	ret <- partykit::nodeapply(tree, nodeids(tree), function(x) {
 
-		split <- split_node(x)
+		split <- partykit::split_node(x)
 
 		if (length(x) > 0) {
-			slabs <- character_split(split, data = tree$data, digits = 3)
+			slabs <- partykit::character_split(split, data = tree$data, digits = 3)
 			rule <- if (any(stringr::str_detect(slabs$levels, '[<>]'))) {
 				paste(slabs$name, slabs$levels)
 			} else {
 				paste(slabs$name, "in", slabs$levels)
 			}
-			kids <- kids_node(x)
+			kids <- partykit::kids_node(x)
 
 			data.frame(
-				parent = id_node(x),
+				parent = partykit::id_node(x),
 				rule,
 				id = sapply(kids, id_node),
 
@@ -57,7 +57,7 @@ tidy_tree.party <- function(tree, rule_as_text = TRUE, eval_ready = FALSE,
 					if (all(is.na(kids_obs))) {
 						# Sometimes both kids node don't have info on n.obs, so the node observations need to be extracted (expensive).
 						# I can't understand how partykit::print solves this apparent randomness
-						kids_obs <- data_party(tree, id = sapply(kids, id_node)) %>% sapply(nrow)
+						kids_obs <- partykit::data_party(tree, id = sapply(kids, id_node)) %>% sapply(nrow)
 					} else { # sometimes instead n.obs is only in one of the kids
 						kids_obs[is.na(kids_obs)] <- x$info$nobs - kids_obs[!is.na(kids_obs)]
 					}
@@ -66,8 +66,8 @@ tidy_tree.party <- function(tree, rule_as_text = TRUE, eval_ready = FALSE,
 				},
 				#terminal = sapply(kids, is.terminal) # slightly slower
 				terminal = c(
-					is.terminal(kids[[1]]),
-					is.terminal(kids[[2]])
+					partykit::is.terminal(kids[[1]]),
+					partykit::is.terminal(kids[[2]])
 				)
 			)
 		}
