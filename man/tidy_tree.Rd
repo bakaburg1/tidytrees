@@ -10,6 +10,7 @@
   tree,
   rule_as_text = TRUE,
   eval_ready = FALSE,
+  simplify_rules = FALSE,
   add_estimates = TRUE,
   add_interval = FALSE,
   interval_level = 0.95,
@@ -20,6 +21,7 @@
   tree,
   rule_as_text = TRUE,
   eval_ready = FALSE,
+  simplify_rules = FALSE,
   add_estimates = TRUE,
   add_interval = FALSE,
   interval_level = 0.95,
@@ -30,6 +32,7 @@ tidy_tree(
   tree,
   rule_as_text = TRUE,
   eval_ready = FALSE,
+  simplify_rules = FALSE,
   add_estimates = TRUE,
   add_interval = FALSE,
   interval_level = 0.95,
@@ -44,6 +47,9 @@ tidy_tree(
 \item{eval_ready}{Converts the rules into R compatible logical expressions
 ready to use for data filtering purposes. If \code{FALSE}, the rules are kept as
 originally defined in each class.}
+
+\item{simplify_rules}{Keep the minimal set of conditions to identify a
+node in the tree.}
 
 \item{add_estimates}{Add predicted values at each node, as computed by the
 function passed to \code{est_fun}.}
@@ -95,12 +101,17 @@ to ensure that the fit details are correct.
 
 \examples{
 
-mod <- rpart(iris$Sepal.Length ~ iris$Species)
+tree <- rpart(iris$Sepal.Length ~ iris$Species)
 
 tidy_tree(mod)
 
 ## Adding confidence intervals
 
 tidy_tree(mod, add_interval = TRUE)
+
+## Simplify rules to remove redundant conditions
+
+tree <- ctree(Sepal.Length ~ Species + Sepal.Width, iris)
+tidy_tree(simplify_rules = TRUE)
 
 }

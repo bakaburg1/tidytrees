@@ -45,6 +45,40 @@ test_that('all nodes are included', {
 
 perform_stump_test(rpart)
 
+test_that('the string rule simplification gives the expected output', {
+
+	mod <- rpart(Sepal.Length ~ Species + Sepal.Width, iris)
+
+	obs <- tidy_tree(mod, eval_ready = F)$rule %>% simplify_rules()
+
+	exp <- c("Species = setosa", "Sepal.Width < 3.25 & Species = setosa",
+					 "Sepal.Width >= 3.25 & Species = setosa", "Species = versicolor,virginica",
+					 "Species = versicolor", "Sepal.Width < 2.75 & Species = versicolor",
+					 "Sepal.Width >= 2.75 & Species = versicolor", "Sepal.Width < 3.05 & Sepal.Width >= 2.75 & Species = versicolor",
+					 "Sepal.Width >= 3.05 & Species = versicolor", "Species = virginica",
+					 "Sepal.Width < 2.85 & Species = virginica", "Sepal.Width >= 2.85 & Species = virginica")
+
+	expect_identical(obs, exp)
+})
+
+test_that('the list rule simplification gives the expected output', {
+
+	mod <- rpart(Sepal.Length ~ Species + Sepal.Width, iris)
+
+	obs <- tidy_tree(mod, eval_ready = F, rule_as_text = F)$rule %>% simplify_rules()
+
+	exp <- list("Species = setosa", c("Sepal.Width < 3.25", "Species = setosa"
+	), c("Sepal.Width >= 3.25", "Species = setosa"), "Species = versicolor,virginica",
+	"Species = versicolor", c("Sepal.Width < 2.75", "Species = versicolor"
+	), c("Sepal.Width >= 2.75", "Species = versicolor"), c("Sepal.Width < 3.05",
+																												 "Sepal.Width >= 2.75", "Species = versicolor"), c("Sepal.Width >= 3.05",
+																												 																									"Species = versicolor"), "Species = virginica", c("Sepal.Width < 2.85",
+																												 																																																		"Species = virginica"), c("Sepal.Width >= 2.85", "Species = virginica"
+																												 																																																		))
+
+	expect_identical(obs, exp)
+})
+
 # Discrete model testing -------------------------------------------------
 
 mod.discr <- rpart(Species ~ Sepal.Width + Sepal.Length, data = iris)
