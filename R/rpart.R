@@ -6,6 +6,7 @@
 #' @export
 
 tidy_tree.rpart <- function(tree, rule_as_text = TRUE, eval_ready = FALSE,
+														simplify_rules = FALSE,
 														add_estimates = TRUE, add_interval = FALSE,
 														interval_level = 0.95,
 														est_fun = tidytrees::get_pred_estimates) {
@@ -85,6 +86,10 @@ tidy_tree.rpart <- function(tree, rule_as_text = TRUE, eval_ready = FALSE,
 	}
 
 	rownames(ret) <- NULL
+
+	if (simplify_rules) {
+		ret$rule <- simplify_rules(ret$rule)
+	}
 
 	dplyr::tibble(ret)
 }

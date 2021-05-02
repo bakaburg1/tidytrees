@@ -37,6 +37,45 @@ test_that('all nodes are included', {
 
 perform_stump_test(ctree)
 
+test_that('the string rule simplification gives the expected output', {
+
+	mod <- ctree(Sepal.Length ~ Species + Sepal.Width, iris)
+
+	obs <- tidy_tree(mod, eval_ready = F)$rule %>% simplify_rules()
+
+	exp <- c("Species in setosa", "Sepal.Width <= 3.2 & Species in setosa",
+					"Sepal.Width > 3.2 & Species in setosa", "Sepal.Width <= 3.6 & Sepal.Width > 3.2 & Species in setosa",
+					"Sepal.Width > 3.6 & Species in setosa", "Species in versicolor, virginica",
+					"Sepal.Width <= 2.7 & Species in versicolor, virginica", "Sepal.Width <= 2.7 & Species in versicolor",
+					"Sepal.Width <= 2.7 & Species in virginica", "Sepal.Width > 2.7 & Species in versicolor, virginica",
+					"Sepal.Width > 2.7 & Species in versicolor", "Sepal.Width > 2.7 & Species in virginica",
+					"Sepal.Width <= 2.8 & Sepal.Width > 2.7 & Species in virginica",
+					"Sepal.Width > 2.8 & Species in virginica")
+
+	expect_identical(obs, exp)
+})
+
+test_that('the list rule simplification gives the expected output', {
+
+	mod <- ctree(Sepal.Length ~ Species + Sepal.Width, iris)
+
+	obs <- tidy_tree(mod, eval_ready = F, rule_as_text = F)$rule %>% simplify_rules()
+
+	exp <- list("Species in setosa", c("Sepal.Width <= 3.2", "Species in setosa"
+	), c("Sepal.Width > 3.2", "Species in setosa"), c("Sepal.Width <= 3.6",
+																										"Sepal.Width > 3.2", "Species in setosa"), c("Sepal.Width > 3.6",
+																																																 "Species in setosa"), "Species in versicolor, virginica", c("Sepal.Width <= 2.7",
+																																																 																														"Species in versicolor, virginica"), c("Sepal.Width <= 2.7",
+																																																 																																																	 "Species in versicolor"), c("Sepal.Width <= 2.7", "Species in virginica"
+																																																 																																																	 ), c("Sepal.Width > 2.7", "Species in versicolor, virginica"),
+	c("Sepal.Width > 2.7", "Species in versicolor"), c("Sepal.Width > 2.7",
+																										 "Species in virginica"), c("Sepal.Width <= 2.8", "Sepal.Width > 2.7",
+																										 													 "Species in virginica"), c("Sepal.Width > 2.8", "Species in virginica"
+																										 													 ))
+
+	expect_identical(obs, exp)
+})
+
 # Discrete model testing -------------------------------------------------
 
 mod.discr <- ctree(Species ~ Sepal.Width + Sepal.Length, data = iris)
