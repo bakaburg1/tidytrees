@@ -87,7 +87,7 @@ out$rule[3]
 
 ```
 
-Tree models tend to create explicity, nested rules with redundant components, in order to retain the whole branching information. This is not necessary for data partition and makes rules harder to read. The package allow to simplify such rules in order to retain the minimal necessary set of conditions to identify a partition. The simplified rules are ordered alphabetically to keep conditions on the same variables together.
+Tree models tend to create explicit, nested rules with redundant components, useful to retain the whole branching information. The package can simplify such rules in order to make them more human-friendly while keeping the minimal necessary set of conditions to identify a partition. The simplified rules are ordered alphabetically to group conditions on the same variables together.
 
 ```{r rule simplification}
 library(tidytrees)
