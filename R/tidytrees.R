@@ -11,6 +11,8 @@
 #' @param eval_ready Converts the rules into R compatible logical expressions
 #'   ready to use for data filtering purposes. If `FALSE`, the rules are kept as
 #'   originally defined in each class.
+#' @param simplify_rules Keep the minimal set of conditions to identify a
+#'   node in the tree.
 #' @param add_estimates Add predicted values at each node, as computed by the
 #'   function passed to `est_fun`.
 #' @param add_interval Logical indicating whether or not to include an
@@ -40,7 +42,7 @@
 #'
 #' @examples
 #'
-#' mod <- rpart(iris$Sepal.Length ~ iris$Species)
+#' tree <- rpart(iris$Sepal.Length ~ iris$Species)
 #'
 #' tidy_tree(mod)
 #'
@@ -48,7 +50,12 @@
 #'
 #' tidy_tree(mod, add_interval = TRUE)
 #'
-tidy_tree <- function(tree, rule_as_text = TRUE, eval_ready = FALSE,
+#' ## Simplify rules to remove redundant conditions
+#'
+#' tree <- ctree(Sepal.Length ~ Species + Sepal.Width, iris)
+#' tidy_tree(simplify_rules = TRUE)
+#'
+tidy_tree <- function(tree, rule_as_text = TRUE, eval_ready = FALSE, simplify_rules = FALSE,
 											 add_estimates = TRUE, add_interval = FALSE, interval_level = 0.95,
 											 est_fun = tidytrees::get_pred_estimates)
 {

@@ -6,6 +6,7 @@
 #' @export
 
 tidy_tree.party <- function(tree, rule_as_text = TRUE, eval_ready = FALSE,
+														simplify_rules = FALSE,
 														add_estimates = TRUE, add_interval = FALSE,
 														interval_level = 0.95,
 														est_fun = tidytrees::get_pred_estimates) {
@@ -110,6 +111,11 @@ tidy_tree.party <- function(tree, rule_as_text = TRUE, eval_ready = FALSE,
 		}) %>% dplyr::bind_rows()
 	}
 
+	if (simplify_rules) {
+		ret$rule <- simplify_rules(ret$rule)
+	}
+
 	dplyr::arrange(ret, id) %>% dplyr::select(-parent) %>%
+		dplyr::mutate(rule = simplify_rules(rule)) %>%
 		dplyr::tibble()
 }
