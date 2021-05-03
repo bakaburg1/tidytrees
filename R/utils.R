@@ -36,7 +36,7 @@ is.discrete <- function(x) {
 simplify_rules <- function(rules) {
 	out <- sapply(rules, function(rule) {
 
-		if (all(rule == '')) return(NA)
+		if (all(rule == '') | all(is.na(rule))) return(NA)
 
 		if (length(rule) == 1) {
 			components <- stringr::str_split(rule, ' & ') %>% unlist
