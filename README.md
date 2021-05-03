@@ -52,17 +52,17 @@ tidy_tree(model)
 #>    rule                                         id n.obs terminal depth estimate
 #>    <chr>                                     <int> <int> <lgl>    <dbl>    <dbl>
 #>  1 Species in setosa                             2    50 FALSE        1     3.43
-#>  2 Species in setosa & Sepal.Length <= 5         3    28 FALSE        2     3.20
-#>  3 Species in setosa & Sepal.Length <= 5 & …     4    20 TRUE         3     3.14
-#>  4 Species in setosa & Sepal.Length <= 5 & …     5     8 TRUE         3     3.36
-#>  5 Species in setosa & Sepal.Length > 5          6    22 FALSE        2     3.71
-#>  6 Species in setosa & Sepal.Length > 5 & S…     7    12 TRUE         3     3.62
-#>  7 Species in setosa & Sepal.Length > 5 & S…     8    10 TRUE         3     3.82
+#>  2 Sepal.Length <= 5 & Species in setosa         3    28 FALSE        2     3.20
+#>  3 Sepal.Length <= 4.9 & Species in setosa       4    20 TRUE         3     3.14
+#>  4 Sepal.Length <= 5 & Sepal.Length > 4.9 &…     5     8 TRUE         3     3.36
+#>  5 Sepal.Length > 5 & Species in setosa          6    22 FALSE        2     3.71
+#>  6 Sepal.Length <= 5.3 & Sepal.Length > 5 &…     7    12 TRUE         3     3.62
+#>  7 Sepal.Length > 5.3 & Species in setosa        8    10 TRUE         3     3.82
 #>  8 Species in versicolor, virginica              9   100 FALSE        1     2.87
-#>  9 Species in versicolor, virginica & Sepal…    10    58 FALSE        2     2.74
-#> 10 Species in versicolor, virginica & Sepal…    11    12 TRUE         3     2.47
-#> 11 Species in versicolor, virginica & Sepal…    12    46 TRUE         3     2.81
-#> 12 Species in versicolor, virginica & Sepal…    13    42 TRUE         2     3.05
+#>  9 Sepal.Length <= 6.3 & Species in versico…    10    58 FALSE        2     2.74
+#> 10 Sepal.Length <= 5.5 & Species in versico…    11    12 TRUE         3     2.47
+#> 11 Sepal.Length <= 6.3 & Sepal.Length > 5.5…    12    46 TRUE         3     2.81
+#> 12 Sepal.Length > 6.3 & Species in versicol…    13    42 TRUE         2     3.05
 
 # ... and with rpart trees (more models to come)
 model <- rpart(Sepal.Width ~ Species + Sepal.Length, data = iris)
@@ -119,6 +119,67 @@ out$rule[3]
 #> [1] "Species %in% c(\"versicolor\", \"virginica\")"
 #> [2] "Sepal.Length < 6.35"                          
 #> [3] "Sepal.Length < 5.55"
+```
+
+Tree models tend to create explicity, nested rules with redundant
+components, in order to retain the whole branching information. This is
+not necessary for data partition and makes rules harder to read. The
+package allow to simplify such rules in order to retain the minimal
+necessary set of conditions to identify a partition. The simplified
+rules are ordered alphabetically to keep conditions on the same
+variables together.
+
+``` r
+library(tidytrees)
+library(dplyr)
+library(rpart)
+
+model <- rpart(Sepal.Length ~ Species + Sepal.Width, data = iris)
+
+# Full rules
+
+tidy_tree(model)$rule[5:9]
+#> [1] "Species = versicolor,virginica & Species = versicolor"                                            
+#> [2] "Species = versicolor,virginica & Species = versicolor & Sepal.Width < 2.75"                       
+#> [3] "Species = versicolor,virginica & Species = versicolor & Sepal.Width >= 2.75"                      
+#> [4] "Species = versicolor,virginica & Species = versicolor & Sepal.Width >= 2.75 & Sepal.Width < 3.05" 
+#> [5] "Species = versicolor,virginica & Species = versicolor & Sepal.Width >= 2.75 & Sepal.Width >= 3.05"
+
+# Simplified rules
+tidy_tree(model, simplify_rules = T)$rule[5:9]
+#> [1] "Species = versicolor"                                           
+#> [2] "Sepal.Width < 2.75 & Species = versicolor"                      
+#> [3] "Sepal.Width >= 2.75 & Species = versicolor"                     
+#> [4] "Sepal.Width < 3.05 & Sepal.Width >= 2.75 & Species = versicolor"
+#> [5] "Sepal.Width >= 3.05 & Species = versicolor"
+
+# It works also on a list of conditions
+tidy_tree(model, rule_as_text = F, simplify_rules = T)$rule[5:9]
+#> [[1]]
+#> [1] "Species = versicolor"
+#> 
+#> [[2]]
+#> [1] "Sepal.Width < 2.75"   "Species = versicolor"
+#> 
+#> [[3]]
+#> [1] "Sepal.Width >= 2.75"  "Species = versicolor"
+#> 
+#> [[4]]
+#> [1] "Sepal.Width < 3.05"   "Sepal.Width >= 2.75"  "Species = versicolor"
+#> 
+#> [[5]]
+#> [1] "Sepal.Width >= 3.05"  "Species = versicolor"
+
+# Can be applied to previously created rules
+
+rules <- tidy_tree(model)$rule[5:9]
+
+simplify_rules(rules)
+#> [1] "Species = versicolor"                                           
+#> [2] "Sepal.Width < 2.75 & Species = versicolor"                      
+#> [3] "Sepal.Width >= 2.75 & Species = versicolor"                     
+#> [4] "Sepal.Width < 3.05 & Sepal.Width >= 2.75 & Species = versicolor"
+#> [5] "Sepal.Width >= 3.05 & Species = versicolor"
 ```
 
 ## Node predictions
