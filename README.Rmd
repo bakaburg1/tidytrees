@@ -87,6 +87,32 @@ out$rule[3]
 
 ```
 
+Tree models tend to create explicity, nested rules with redundant components, in order to retain the whole branching information. This is not necessary for data partition and makes rules harder to read. The package allow to simplify such rules in order to retain the minimal necessary set of conditions to identify a partition. The simplified rules are ordered alphabetically to keep conditions on the same variables together.
+
+```{r rule simplification}
+library(tidytrees)
+library(dplyr)
+library(rpart)
+
+model <- rpart(Sepal.Length ~ Species + Sepal.Width, data = iris)
+
+# Full rules
+
+tidy_tree(model)$rule[5:9]
+
+# Simplified rules
+tidy_tree(model, simplify_rules = T)$rule[5:9]
+
+# It works also on a list of conditions
+tidy_tree(model, rule_as_text = F, simplify_rules = T)$rule[5:9]
+
+# Can be applied to previously created rules
+
+rules <- tidy_tree(model)$rule[5:9]
+
+simplify_rules(rules)
+
+```
 
 ## Node predictions
 
