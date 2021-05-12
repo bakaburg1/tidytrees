@@ -48,7 +48,7 @@ simplify_rules <- function(rules) {
 		components <- sort(components[ind])
 
 		if (length(rule) == 1) paste(components, collapse = ' & ') else components
-	})
+	}) %>% unlist()
 
 	setNames(out, NULL)
 }
