@@ -71,6 +71,9 @@ get_pred_estimates <- function(values, add_interval = FALSE, interval_level = 0.
 
 	} else if (is.discrete(values)) {
 
+		# easier to work with factors
+		if (is.logical(values)) values <- factor(values, levels = c(FALSE, TRUE))
+
 		# extract unique values
 		if (is.factor(values)) lvls <- levels(values)
 		else lvls <- sort(unique(values))
