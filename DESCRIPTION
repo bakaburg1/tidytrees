@@ -1,6 +1,6 @@
 Package: tidytrees
 Title: Convert Regression/Classification Trees Into Tidy Tibbles
-Version: 0.2.2
+Version: 0.2.3
 Authors@R: 
     person(given = "Angelo",
            family = "D'Ambrosio",
