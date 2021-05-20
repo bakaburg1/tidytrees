@@ -34,7 +34,9 @@ is.discrete <- function(x) {
 #'
 
 simplify_rules <- function(rules) {
-	out <- sapply(rules, function(rule) {
+	if (length(rules) == 0 || is.null(rules)) return(rules)
+
+	sapply(rules, function(rule) {
 
 		if (all(rule == '') | all(is.na(rule))) return(NA)
 
@@ -48,7 +50,5 @@ simplify_rules <- function(rules) {
 		components <- sort(components[ind])
 
 		if (length(rule) == 1) paste(components, collapse = ' & ') else components
-	}) %>% unlist()
-
-	setNames(out, NULL)
+	}) %>% setNames(NULL)
 }
