@@ -49,6 +49,8 @@ tidy_tree.rpart <- function(tree, rule_as_text = TRUE, eval_ready = FALSE,
 
 		y <- tree$y
 
+		# rpart change y to an int with categorical outcome and this may create
+		# problems during estimation due to missing levels in some nodes
 		if (tree$method == 'class') {
 			y <- factor(y, labels = attr(tree, "ylevels"))
 		}
