@@ -51,8 +51,8 @@ get_pred_estimates(iris$Sepal.Width)
 
 mod <- rpart::rpart(iris$Species ~ iris$Sepal.Length, iris)
 
-tidy_tree(mod, add_estimates = T, esl_fun = get_pred_estimates, add_interval = T)
-## (actually esl_fun = get_pred_estimates is redundant since it's the default)
+tidy_tree(mod, add_estimates = T, est_fun = get_pred_estimates, add_interval = T)
+## (actually est_fun = get_pred_estimates is redundant since it's the default)
 
 
 
